@@ -1,4 +1,4 @@
-package com.kuos.appium.util;
+package com.kuo.appium.base;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -23,7 +23,6 @@ public class BaseTest {
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(MobileCapabilityType.DEVICE_NAME, "kuosEmu");
 		cap.setCapability(MobileCapabilityType.APP, fs.getAbsolutePath());
-		// cap.setCapability(AndroidMobileCapabilityType.APP_WAIT_ACTIVITY, "com.yelp.*");
 		AndroidDriver<AndroidElement> driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
 		
 		return driver;
