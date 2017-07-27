@@ -19,6 +19,7 @@ import cucumber.api.java.en.When;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.android.AndroidKeyCode;
 
 public class HomePageTests extends BaseTest{
 	
@@ -29,7 +30,7 @@ public class HomePageTests extends BaseTest{
 	public void start_app() throws MalformedURLException{
 			System.out.println("This should only run once");
 			driver = Capabilities();
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
 			t = new TouchAction(driver);
 	}
 	
@@ -57,7 +58,13 @@ public class HomePageTests extends BaseTest{
 
 	@When(".*taps ([^\"]*)$")
 	public void tap_Element(String element) throws Throwable {
-		driver.findElementByAndroidUIAutomator("text(\"All Categories\")").click();
+		if(element.contains("All Categories")){
+			driver.findElementByAndroidUIAutomator("text(\"All Categories\")").click();
+		} else if(element.contains("Flash Deals")){
+			driver.findElementByAndroidUIAutomator(
+					"new UiScrollable(new UiSelector()).scrollIntoView(resourceId(\"com.alibaba.aliexpresshd:id/iv_item2_0\"))");
+			driver.findElementById("com.alibaba.aliexpresshd:id/view_1").click();
+		}
 		// add to cart, all categories, flash deals
 		System.out.println(element);
 	}
@@ -67,16 +74,18 @@ public class HomePageTests extends BaseTest{
 		ElementOperator op = new ElementOperator();
 		Set<String> categories = new HashSet<String>();
 		
-		// Scroll through entire list and get all categories **Create better method
-		categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
-		driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Shoes\"))");
-		categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
-		driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Weddings & Events\"))");
-		categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
-		
-		for(String category: categories){
-			System.out.println(category);
-		}	
+		if(results.contains("categories")){
+			// Scroll through entire list and get all categories **Create better method
+			categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
+			driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Shoes\"))");
+			categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
+			driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Weddings & Events\"))");
+			categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
+			
+			for(String category: categories){
+				System.out.println(category);
+			}
+		}
 		// relevant search results, all categories
 		System.out.println(results);
 	}
@@ -84,14 +93,15 @@ public class HomePageTests extends BaseTest{
 
 	@When("^selects the first product$")
 	public void selects_the_first_product() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
+		driver.findElementByXPath("(//android.widget.ImageView[@resource-id='com.alibaba.aliexpresshd:id/iv_block0'])[1]").click();
 	}
 
 	@When("^fills desired conditions$")
 	public void fills_desired_conditions() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
+		driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Select\"))").click();
+		driver.findElementByXPath("//android.widget.RadioGroup[1]//android.widget.CompoundButton[1]").click();
+		driver.findElementByXPath("//android.widget.RadioGroup[2]//android.widget.CompoundButton[1]").click();
+		t.tap(240, 1711).perform();
 	}
 
 	@Then("^Item is added to cart$")
@@ -101,21 +111,18 @@ public class HomePageTests extends BaseTest{
 	}
 
 	@When("^the user searches for \"([^\"]*)\"$")
-	public void the_user_searches_for(String arg1) throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
+	public void the_user_searches_for(String query) throws Throwable {
+		driver.findElementById("com.alibaba.aliexpresshd:id/search_hint").click();
+		
+		try {
+			driver.findElementByAndroidUIAutomator("text(\"OK\")").click();
+		} catch(Exception e){
+			System.out.println("No popup found");
+		}
+		
+		driver.findElementById("com.alibaba.aliexpresshd:id/abs__search_src_text").sendKeys(query);
+		driver.pressKeyCode(AndroidKeyCode.ENTER);
 	}
 
-	@When("^the user swipes left$")
-	public void the_user_swipes_left() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
-	}
-
-	@Then("^the Just for You Page is displayed$")
-	public void the_Just_for_You_Page_is_displayed() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
-	}
 
 }
