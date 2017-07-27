@@ -5,7 +5,7 @@ Search function produces valid results
 Able to add flash deal product to cart
 
 Scenario: User views All Categories
-Given User is on Home Page
+Given User starts app
 When the user taps the All Categories button
 Then a list of all categories is displayed
 
@@ -18,7 +18,7 @@ And taps Add to Cart
 Then Item is added to cart
 
 Scenario Outline: User searches for product 
-Given User is on home page
+Given User is on Home Page
 When the user searches for "<product>"
 Then a list of relevant search results is displayed
 
