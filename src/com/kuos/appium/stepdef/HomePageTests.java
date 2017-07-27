@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Point;
 
-import com.kuo.appium.base.BaseTest;
+import com.kuos.appium.base.BaseTest;
 import com.kuos.appium.util.ElementOperator;
 
 import cucumber.api.PendingException;
@@ -65,7 +65,6 @@ public class HomePageTests extends BaseTest{
 					"new UiScrollable(new UiSelector()).scrollIntoView(resourceId(\"com.alibaba.aliexpresshd:id/iv_item2_0\"))");
 			driver.findElementById("com.alibaba.aliexpresshd:id/view_1").click();
 		}
-		// add to cart, all categories, flash deals
 		System.out.println(element);
 	}
 
@@ -85,8 +84,15 @@ public class HomePageTests extends BaseTest{
 			for(String category: categories){
 				System.out.println(category);
 			}
+			
+			// Assert that all 22 categories are accounted for
+			
+		}else if(results.contains("search results")){
+			
+			// Assert results match search query
+			
 		}
-		// relevant search results, all categories
+		
 		System.out.println(results);
 	}
 	
@@ -106,8 +112,9 @@ public class HomePageTests extends BaseTest{
 
 	@Then("^Item is added to cart$")
 	public void item_is_added_to_cart() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new PendingException();
+
+		// Assert Cart has item
+		
 	}
 
 	@When("^the user searches for \"([^\"]*)\"$")

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import com.kuo.appium.base.BaseTest;
+import com.kuos.appium.base.BaseTest;
 import com.kuos.appium.util.*;
 
 import io.appium.java_client.android.AndroidDriver;

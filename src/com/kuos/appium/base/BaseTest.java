@@ -1,4 +1,4 @@
-package com.kuo.appium.base;
+package com.kuos.appium.base;
 
 import java.io.File;
 import java.net.MalformedURLException;
