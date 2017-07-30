@@ -6,7 +6,7 @@ Able to add flash deal product to cart
 
 Scenario: User views All Categories
 Given User starts app
-When the user taps the All Categories button
+When the user taps All Categories
 Then a list of all categories is displayed
 
 Scenario Outline: User searches for product 

@@ -1,13 +1,12 @@
 package com.kuos.appium.tests;
 
 import java.net.MalformedURLException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.kuos.appium.base.BaseTest;
-import com.kuos.appium.util.*;
+import com.kuos.appium.pagemethods.HomePageMethods;
 
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
@@ -15,23 +14,33 @@ public class CategoriesListTest extends BaseTest{
 	    
 	public static void main(String[] args) throws MalformedURLException {
 
+		
+		// Test class for isolated testing, step definitions in separate file
+		
+		
 		AndroidDriver<AndroidElement> driver = Capabilities();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		TouchAction t = new TouchAction(driver);
+		HomePageMethods app = new HomePageMethods(driver);
 		
-		ElementOperator op = new ElementOperator();
-		Set<String> categories = new HashSet<String>();
+//		Scenario: User views All Categories		
+		app.tapAllCategButton();
+		app.captureList();
+		app.navigateHome();
+		app.removeCouponPopup();
+
+//		Scenario Outline: User searches for product 
 		
-		// Scroll through entire list and get all categories **Create better method
-		driver.findElementByAndroidUIAutomator("text(\"All Categories\")").click();
-		categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
-		driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Shoes\"))");
-		categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
-		driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Weddings & Events\"))");
-		categories.addAll(op.getTextList(driver.findElementsByXPath("//android.widget.TextView")));
+		app.searchFor("phone");
+		app.navigateHome();
+
+//
+//		Scenario: User adds flash deal item to cart 
 		
-		for(String category: categories){
-			System.out.println(category);
-		}
+		app.tapFlashDeal();
+		app.tapFirstFlashDeal();
+		app.fillProductParams();
+		t.tap(240, 1711).perform();
 
 	}
 
